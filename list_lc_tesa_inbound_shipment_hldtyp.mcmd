@@ -24,7 +24,7 @@
 	AND poldat_view.wh_id = inventory_view.wh_id
 	and poldat_view.rtstr2 = hldmst.hldtyp
   where inventory_view.dtlnum = @dtlnum
-	and inventory_view.wh_id = @wh_id] catch(-1403)
+	and inventory_view.wh_id = @wh_id] catch(@?)
 ]]>
 </local-syntax>
 <documentation>

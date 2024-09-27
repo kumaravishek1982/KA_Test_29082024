@@ -5,7 +5,7 @@
   <local-syntax>
 <![CDATA[
 /*No standard command available.Hence using Views*/
-/*No views existing for the tables used*/
+/****No views existing for the tables used*****/
 [select inventory_view.dtlnum,
 		invhld.hldnum,
 		invhld.hldpfx

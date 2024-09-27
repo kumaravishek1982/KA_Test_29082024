@@ -1,0 +1,55 @@
+list lc tesa pick confirm for inventory catch(-1403)
+|
+if (@? = 0)
+{
+    list policies
+     where polcod = 'LC_PICK_CONFIRM'
+       and polvar = 'INSTALLED'
+       and polval = 'INSTALLED'
+       and rtstr2 = @client_id
+       and wh_id = @wh_id
+       and rtstr1 = 'LC-PICK-CONFIRM'
+       and rtnum1 = 1
+       and rownum < 2 catch(-1403)
+    |
+    if (@? = 0)
+    {
+        validate lc tesa shipment pick complete
+         where ship_id = @ship_id
+           and client_id = @client_id
+           and wh_id = @wh_id
+           and mov_zone_id = @mov_zone_id
+        |
+        if (@? = 0)
+        {
+            list lc tesa manual pick confirm
+             where ship_id = @ship_id
+               and wh_id = @wh_id catch(-1403)
+            |
+            if (@? = 0)
+            {
+                set return status
+                 where status = 4000003
+            }
+            else if (@? = -1403)
+            {
+                get integrator system id
+                 where systyp = 'WMD'
+                |
+                sl_log event
+                 where evt_id = @rtstr1
+                   and sys_id = @sys_id
+                   and ifd_data_ptr = NULL
+                   and ship_id = @ship_id
+                   and wh_id = @wh_id
+                   and client_id = @client_id;
+                write order activity
+                 where ship_id = @ship_id
+                   and wh_id = @wh_id
+                   and client_id = @client_id
+                   and reacod_cmnt = @reacod_cmnt
+                   and actcod = 'LC-PICK-CONFIRM'
+            }
+        }
+    }
+}

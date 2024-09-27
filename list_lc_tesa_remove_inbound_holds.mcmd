@@ -1,0 +1,33 @@
+<command>
+  <name>list lc tesa remove inbound holds</name>
+  <description>list lc tesa remove inbound holds</description>
+  <type>Local Syntax</type>
+  <local-syntax>
+<![CDATA[
+/*No standard command available.Hence using Views*/
+/*No views existing for the tables used*/
+[select count(invhld.hldnum) hldcnt,
+		inventory_view.dtlnum
+   from inventory_view
+   join rcvlin
+	 on inventory_view.wh_id = rcvlin.wh_id
+	and inventory_view.prtnum = rcvlin.prtnum
+	and inventory_view.prt_client_id = rcvlin.prt_client_id
+	and inventory_view.rcvkey = rcvlin.rcvkey
+   join invhld
+	 on inventory_view.wh_id = invhld.wh_id
+	and inventory_view.dtlnum = invhld.dtlnum
+   join hldmst
+	 on hldmst.hldpfx = invhld.hldpfx
+	and hldmst.hldnum = invhld.hldnum
+	and hldmst.wh_id = invhld.wh_id
+  WHERE rcvlin.trknum = @trknum
+	AND rcvlin.wh_id = @wh_id
+	AND inventory_view.hld_flg = '1'
+  group by inventory_view.dtlnum]
+]]>
+</local-syntax>
+  <documentation>
+list holds to remove holds for inbound shipment
+</documentation>
+</command>

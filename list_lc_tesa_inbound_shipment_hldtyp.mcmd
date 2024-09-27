@@ -1,0 +1,33 @@
+<command>
+  <name>list lc tesa inbound shipment hldtyp</name>
+  <description>list lc tesa inbound shipment hldtyp</description>
+  <type>Local Syntax</type>
+  <local-syntax>
+<![CDATA[
+/*No standard command available.Hence using Views*/
+/*No views existing for the tables used*/
+[select inventory_view.dtlnum,
+		invhld.hldnum,
+		invhld.hldpfx
+   from inventory_view
+   join invhld
+	 ON invhld.dtlnum = inventory_view.dtlnum
+	AND invhld.wh_id = inventory_view.wh_id
+   join hldmst
+	 on hldmst.hldpfx = invhld.hldpfx
+	and hldmst.hldnum = invhld.hldnum
+	and hldmst.wh_id = invhld.wh_id
+   JOIN poldat_view
+	 ON poldat_view.polcod = 'LC_TESA'
+	AND poldat_view.polvar = 'INBOUND_SHIPMENT'
+	AND poldat_view.polval = 'RELEASE_HOLDS'
+	AND poldat_view.wh_id = inventory_view.wh_id
+	and poldat_view.rtstr2 = hldmst.hldtyp
+  where inventory_view.dtlnum = @dtlnum
+	and inventory_view.wh_id = @wh_id]
+]]>
+</local-syntax>
+<documentation>
+get hold type to remove holds for inbound shipment
+</documentation>
+</command>

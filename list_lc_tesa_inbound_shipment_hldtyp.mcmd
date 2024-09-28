@@ -17,7 +17,7 @@
 	and hldmst.hldnum = invhld.hldnum
 	and hldmst.wh_id = invhld.wh_id
    JOIN poldat_view
-	 ON poldat_view.polcod = 'LC_TESA'
+	 ON poldat_view.polcod = 'USR_TESA'
 	AND poldat_view.polvar = 'INBOUND_SHIPMENT'
 	AND poldat_view.polval = 'RELEASE_HOLDS'
 	AND poldat_view.wh_id = inventory_view.wh_id
